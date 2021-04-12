@@ -15,7 +15,6 @@ import java.io.File;
 
 @Getter
 @Setter
-@Component
 public class TelegramBot extends TelegramLongPollingBot {
     private String botUsername;
     private String botToken;
