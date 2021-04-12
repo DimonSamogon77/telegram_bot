@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import ru.dimon.bot.telegram_bot.messages.handlers.HelloMessageHandler;
 import ru.dimon.bot.telegram_bot.messages.handlers.MessageHandlers;
+import ru.dimon.bot.telegram_bot.messages.handlers.NewsHandler;
+import ru.dimon.bot.telegram_bot.messages.handlers.NewsInlineKeyboard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,18 +18,29 @@ import java.util.Map;
 
 @Component
 public class MessageHandler {
-    private Map<String, MessageHandlers> messagesMap= new HashMap<>();
+    private Map<String, MessageHandlers> messagesMap = new HashMap<>();
 
     {
         messagesMap.put("/start", new HelloMessageHandler());
+        messagesMap.put("Новость", new NewsHandler());
+        messagesMap.put("Новости", new NewsInlineKeyboard());
+
     }
 
-    public SendMessage handleUpdate(Update update){
-        ReplyKeyboardMarkup replyKeyboardMarkup = getMenuKeyboard();
-        return createMessageWithKeyboard(messagesMap.get(update.getMessage().getText()).handle(update), replyKeyboardMarkup);
+    public SendMessage messageHandle(Update update) {
+        if(update.getMessage().getText().equals("Новости")){
+            return messagesMap.get("Новости").handle(update);
+        }else {
+            ReplyKeyboardMarkup replyKeyboardMarkup = getMenuKeyboard();
+            return createMessageWithKeyboard(messagesMap.get(update.getMessage().getText()).handle(update), replyKeyboardMarkup);
+        }
     }
 
-    private ReplyKeyboardMarkup getMenuKeyboard(){
+    public SendMessage callBackHandle(Update update) {
+        return messagesMap.get("Новость").handle(update);
+    }
+
+    private ReplyKeyboardMarkup getMenuKeyboard() {
         final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -38,15 +51,14 @@ public class MessageHandler {
         KeyboardRow row1 = new KeyboardRow();
         row1.add(new KeyboardButton("Аудио"));
         row1.add(new KeyboardButton("Фото"));
+        row1.add(new KeyboardButton("Новости"));
         keyboard.add(row1);
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;
     }
 
-    private SendMessage createMessageWithKeyboard(SendMessage sendMessage, ReplyKeyboardMarkup keyboardMarkup){
+    private SendMessage createMessageWithKeyboard(SendMessage sendMessage, ReplyKeyboardMarkup keyboardMarkup) {
         sendMessage.setReplyMarkup(keyboardMarkup);
         return sendMessage;
     }
-
-
 }

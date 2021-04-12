@@ -3,11 +3,11 @@ package ru.dimon.bot.telegram_bot;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.dimon.bot.telegram_bot.messages.Facade;
 
@@ -15,6 +15,7 @@ import java.io.File;
 
 @Getter
 @Setter
+@Component
 public class TelegramBot extends TelegramLongPollingBot {
     private String botUsername;
     private String botToken;
@@ -27,17 +28,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
-        String text = message.getText();
-        switch (text){
-            case "Аудио":
-                execute(sendAudio(update));
-                break;
-            case "Фото":
-                execute(sendPhoto(update));
-                break;
-            default:
-                execute(facade.getMessageHandler().handleUpdate(update));
+        if(update.hasCallbackQuery()){
+            execute(facade.getMessageHandler().callBackHandle(update));
+        }else {
+            String text = update.getMessage().getText();
+            switch (text) {
+                case "Аудио":
+                    execute(sendAudio(update));
+                    break;
+                case "Фото":
+                    execute(sendPhoto(update));
+                    break;
+                default:
+                    execute(facade.getMessageHandler().messageHandle(update));
+            }
         }
     }
 
