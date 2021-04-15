@@ -6,10 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import ru.dimon.bot.telegram_bot.messages.handlers.HelloMessageHandler;
-import ru.dimon.bot.telegram_bot.messages.handlers.MessageHandlers;
-import ru.dimon.bot.telegram_bot.messages.handlers.NewsHandler;
-import ru.dimon.bot.telegram_bot.messages.handlers.NewsInlineKeyboard;
+import ru.dimon.bot.telegram_bot.messages.handlers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +21,7 @@ public class MessageHandler {
         messagesMap.put("/start", new HelloMessageHandler());
         messagesMap.put("Новость", new NewsHandler());
         messagesMap.put("Новости", new NewsInlineKeyboard());
+        messagesMap.put("Мани", new FinanceHandler());
 
     }
 
@@ -52,6 +50,7 @@ public class MessageHandler {
         row1.add(new KeyboardButton("Аудио"));
         row1.add(new KeyboardButton("Фото"));
         row1.add(new KeyboardButton("Новости"));
+        row1.add(new KeyboardButton("Мани"));
         keyboard.add(row1);
         replyKeyboardMarkup.setKeyboard(keyboard);
         return replyKeyboardMarkup;

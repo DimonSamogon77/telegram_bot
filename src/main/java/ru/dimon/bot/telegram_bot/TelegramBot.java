@@ -3,7 +3,6 @@ package ru.dimon.bot.telegram_bot;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
