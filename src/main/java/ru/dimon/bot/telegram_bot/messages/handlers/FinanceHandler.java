@@ -28,7 +28,7 @@ public class FinanceHandler implements MessageHandlers{
         Elements list = doc.select("#js-screener-container > div.tv-screener__content-pane").select("tbody").select("tr");
         String res="";
         for(Element el: list){
-            res+=el.text()+"\n";
+            res+=el.text()+"\n\n";
         }
         return res;
     }
