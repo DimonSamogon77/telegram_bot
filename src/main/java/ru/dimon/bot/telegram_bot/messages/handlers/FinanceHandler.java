@@ -20,16 +20,32 @@ public class FinanceHandler implements MessageHandlers{
 
     @SneakyThrows
     private String getInfo(){
-        Document doc = Jsoup.connect("https://ru.tradingview.com/markets/indices/quotes-major/")
+        Document doc = Jsoup.connect("https://www.tradingview.com/markets/indices/quotes-major/")
                 .userAgent("Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36")
-                .referrer("https://ru.tradingview.com/markets/indices/quotes-major/")
+                .referrer("https://www.tradingview.com/markets/indices/quotes-major/")
                 .get();
 
         Elements list = doc.select("#js-screener-container > div.tv-screener__content-pane").select("tbody").select("tr");
-        String res="";
-        for(Element el: list){
-            res+=el.text()+"\n\n";
+        String result="";
+        for(Element el:list) {
+            int index = getIndex(el);
+            String[] res = el.text().split(" ");
+            result +=res[0]+
+                    ":\nLast:" + res[index] +
+                    "\nCHG%:" + res[index + 1] +
+                    "\nCHG:" + res[index + 2] +
+                    "\nMax:" + res[index + 3] +
+                    "\nMin:" + res[index + 4] +
+                    "\nRTG:" + res[res.length-1]+"\n\n";
         }
-        return res;
+        System.out.println(result);
+        return result;
+    }
+
+    private int getIndex(Element element){
+        String[] res = element.text().split(" ");
+        if(res[res.length-2].equals("Strong")){
+            return res.length-7;
+        } else return res.length-6;
     }
 }
