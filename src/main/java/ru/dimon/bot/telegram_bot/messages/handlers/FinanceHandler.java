@@ -38,7 +38,6 @@ public class FinanceHandler implements MessageHandlers{
                     "\nMin:" + res[index + 4] +
                     "\nRTG:" + res[res.length-1]+"\n\n";
         }
-        System.out.println(result);
         return result;
     }
 
