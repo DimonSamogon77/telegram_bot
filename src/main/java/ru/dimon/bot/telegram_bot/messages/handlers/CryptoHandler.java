@@ -83,7 +83,6 @@ public class CryptoHandler implements MessageHandlers {
 
     private String getString(String result, Elements list, int i) {
         String[] res = list.get(i).text().split(" ");
-        System.out.println(i);
         int index;
         if (res.length == 11) {
             result += "*" + res[1] + " " + res[2] + " " + res[3] + "*";
