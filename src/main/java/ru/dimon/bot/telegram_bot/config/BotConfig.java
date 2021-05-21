@@ -17,7 +17,7 @@ import ru.dimon.bot.telegram_bot.messages.Facade;
 @ConfigurationProperties(prefix = "telegrambot")
 public class BotConfig {
     private String botUsername;
-    private static final String botToken = System.getenv("BOT_TOKEN");
+    private static final String botToken = "1750927599:AAGEqfduEq5Mm22r0_edSPKyjkTdKofSV1k";
 
 
     @Bean

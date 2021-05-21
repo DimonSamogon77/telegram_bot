@@ -21,22 +21,31 @@ public class MessageHandler {
         messagesMap.put("/start", new HelloMessageHandler());
         messagesMap.put("Новость", new NewsHandler());
         messagesMap.put("Новости", new NewsInlineKeyboard());
+        messagesMap.put("Крип", new CryptoHandler());
+        messagesMap.put("Крипта", new CryptoInlineKeyboard());
         messagesMap.put("Мани", new FinanceHandler());
 
     }
 
     public SendMessage messageHandle(Update update) {
         if(update.getMessage().getText().equals("Новости")){
-            return messagesMap.get("Новости").handle(update);
-        }else {
+            return messagesMap.get(update.getMessage().getText()).handle(update);
+        }else if(update.getMessage().getText().equals("Крипта")){
+            return messagesMap.get(update.getMessage().getText()).handle(update);
+        }else{
             ReplyKeyboardMarkup replyKeyboardMarkup = getMenuKeyboard();
             return createMessageWithKeyboard(messagesMap.get(update.getMessage().getText()).handle(update), replyKeyboardMarkup);
         }
     }
 
     public SendMessage callBackHandle(Update update) {
-        return messagesMap.get("Новость").handle(update);
+        if(update.getCallbackQuery().getMessage().getText().equals("Выберите новость")){
+            return messagesMap.get("Новость").handle(update);
+        }else{
+            return messagesMap.get("Крип").handle(update);
+        }
     }
+
 
     private ReplyKeyboardMarkup getMenuKeyboard() {
         final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -47,8 +56,7 @@ public class MessageHandler {
         List<KeyboardRow> keyboard = new ArrayList<>();
 
         KeyboardRow row1 = new KeyboardRow();
-        row1.add(new KeyboardButton("Аудио"));
-        row1.add(new KeyboardButton("Фото"));
+        row1.add(new KeyboardButton("Крипта"));
         row1.add(new KeyboardButton("Новости"));
         row1.add(new KeyboardButton("Мани"));
         keyboard.add(row1);

@@ -19,41 +19,18 @@ public class TelegramBot extends TelegramLongPollingBot {
     private String botToken;
     private Facade facade;
 
-    public TelegramBot(Facade facade){
+    public TelegramBot(Facade facade) {
         this.facade = facade;
     }
 
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        if(update.hasCallbackQuery()){
+        if (update.hasCallbackQuery()) {
             execute(facade.getMessageHandler().callBackHandle(update));
-        }else {
-            String text = update.getMessage().getText();
-            switch (text) {
-                case "Аудио":
-                    execute(sendAudio(update));
-                    break;
-                case "Фото":
-                    execute(sendPhoto(update));
-                    break;
-                default:
-                    execute(facade.getMessageHandler().messageHandle(update));
-            }
+        } else {
+            execute(facade.getMessageHandler().messageHandle(update));
         }
     }
-
-    public SendAudio sendAudio(Update update){
-        SendAudio sendAudio = new SendAudio();
-        sendAudio.setChatId(update.getMessage().getChatId().toString());
-        sendAudio.setAudio(new InputFile(new File("src/main/resources/audios/1.mp3")));
-        return sendAudio;
-    }
-
-    public SendPhoto sendPhoto(Update update){
-        SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(update.getMessage().getChatId().toString());
-        sendPhoto.setPhoto(new InputFile(new File("src/main/resources/photos/1.jpg")));
-        return sendPhoto;
-    }
 }
+
