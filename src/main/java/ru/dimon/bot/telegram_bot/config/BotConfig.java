@@ -2,7 +2,7 @@ package ru.dimon.bot.telegram_bot.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -14,10 +14,11 @@ import ru.dimon.bot.telegram_bot.messages.Facade;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "telegrambot")
 public class BotConfig {
+    @Value("${telegrambot.botUsername}")
     private String botUsername;
-    private static final String botToken = System.getenv("BOT_TOKEN");
+    @Value("${telegrambot.token}")
+    private String botToken;
 
 
     @Bean
